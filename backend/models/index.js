@@ -1,5 +1,5 @@
 'use strict';
-
+const models = require('../models');
 const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
@@ -14,6 +14,7 @@ if (config.use_env_variable) {
 } else {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
+//sequelize.sync({ force: true })
 
 fs
   .readdirSync(__dirname)
@@ -35,3 +36,6 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 module.exports = db;
+
+
+

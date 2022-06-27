@@ -4,6 +4,7 @@ const jwt = require('./utils/jwt.utils')
 
 //Imports Routes
 const users = require('./routes/userRoute');
+const posts = require('./routes/postRoute')
 
 const app = express();
 
@@ -18,7 +19,8 @@ app.use((req, res, next) => {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use('/users', users);
+app.use('/api/', users);
+app.use('/api/', posts)
 
 // Exporting module
 module.exports = app;

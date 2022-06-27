@@ -1,0 +1,26 @@
+img{
+    object-fit: cover;
+}
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* background-color: #fd2d01; */
+    /* background-color: #ffd7d7; */
+    background-color: #4e5166;
+}
+.gm-logo{
+    width: 600px;
+    height: 130px;
+}
+
+.header__right > a{
+    width: 80px;
+    text-decoration: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 20px;
+    
+} 

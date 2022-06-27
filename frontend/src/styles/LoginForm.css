@@ -1,0 +1,11 @@
+.login_form{
+    
+    width: 500px;
+    height: auto;
+    border: none;
+    border-radius: 30px;
+    
+    margin-top: 30px;
+    border:solid 2px;
+    border-color:#fd2d01;
+}

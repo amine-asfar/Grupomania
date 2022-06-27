@@ -23,7 +23,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       bio: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.TEXT
       },
       isAdmin: {

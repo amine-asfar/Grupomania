@@ -1,0 +1,60 @@
+.signup_form{
+    
+    width: 500px;
+    height: auto;
+    border: none;
+    border-radius: 30px;
+    
+    margin-top: 30px;
+    border:solid 2px;
+    border-color:#fd2d01;
+}
+h2{
+    display: flex;
+    justify-content: center;
+    padding:20px
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+}
+label{
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    
+}
+input{
+    padding: 5px;
+    border:solid 1px;
+    border-color:#fd2d01;
+    margin: 5px 0;
+}
+.first_last_name{
+    
+    display: flex;
+    justify-content: space-between;
+}
+.bottom_create{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    padding: 15px 25px;
+    margin: 20px 0;
+    color: black;
+    font-size: large;
+    font-weight: bold;
+    border-radius: 50px;
+    border:solid 2px;
+    border-color:#fd2d01;
+    background-color: white;
+    
+}
+.bottom_flex{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

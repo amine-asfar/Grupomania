@@ -2,6 +2,7 @@ import React from 'react'
 import '../../styles/Header.css'
 import logo from '../../assets/icon-left-font-monochrome-white.png'
 import LogoutIcon from '@mui/icons-material/Logout';
+import { Link } from 'react-router-dom';
 
 
 function HeaderSignup() {
@@ -11,10 +12,10 @@ function HeaderSignup() {
                 <img src={logo} alt='logo-Groupomania' className='gm-logo' />
             </div>
             <div className='header__right'>
-                <a href='#'>
+                <Link to='/login'>
                     <LogoutIcon />
                     <span>Login </span>
-                </a>
+                </Link>
 
 
             </div>

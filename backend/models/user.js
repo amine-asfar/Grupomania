@@ -1,40 +1,13 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-      models.User.hasMany(models.Post);
-    }
-  }
-  User.init({
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    username: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    bio: DataTypes.STRING,
-    isAdmin: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false
-    }
-  }, {
-    sequelize,
-    modelName: 'User',
-  });
-  return User;
-};
+const mongoose = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validator');
+
+
+const userSchema = mongoose.Schema({
+    firstName:{type:String, required: true},
+    lastName:{type:String, required: true},
+    userName: { type: String, required: true, unique: true },
+    email: { type: String, required: true, unique: true }, //unique (mongoose-unique-validator) deux utilisateurs ne puissent partager la même adresse e-mail.
+    password: { type: String, required: true }
+});
+userSchema.plugin(uniqueValidator);
+module.exports = mongoose.model('User', userSchema);

@@ -1,74 +1,8 @@
-// import React from 'react'
-// import { useState } from 'react'
 
-// import axios from 'axios'
-
-// //import { useNavigate } from 'react-router-dom'
-// import '../../styles/LoginForm.css'
-
-
-// function LoginForm() {
-//     const[data,setData]=useState({
-//         email:"",
-//         password:""
-//     });
-
-//     //const navigate=useNavigate()
-
-//     const handleChange=({currentTarget:input})=>{
-//         setData({...data,[input.name]:input.value});
-//     }
-
-//     const handleSubmit=async(e)=>{
-//         e.preventDefault();
-//         try{
-//             const url ="http://localhost:3000/api/auth/login";
-//             const {data:res}=await axios.post(url,data);
-//             localStorage.setItem("token",res.data);
-//             window.location="/"
-//         }catch(error){
-//            console.log(error)
-//         }
-//         // await fetch("http://localhost:3000/api/auth/login",{
-//         //     method:"POST",
-//         //     headers:{
-//         //         "Content-Type":"application/json"
-//         //     },
-//         //     body:JSON.stringify(data),
-            
-//         // })
-//         // .catch (error=>{
-//         //     window.alert(error);
-//         //     return;
-//         // })
-//         //navigate("/")
-        
-//     }
-//   return (
-//     <div className='login_form'>
-//         <h2>Login</h2>
-//         <form onSubmit={handleSubmit}>
-//             <label>
-//                 Email 
-//                 <input type="email" name="email" onChange={handleChange} value={data.email} required/>
-//             </label>
-//             <label>
-//                 Password 
-//                 <input type="password" name="password" onChange={handleChange} value={data.password} required/>
-//             </label>
-//             <div className='bottom_flex'>
-//             <button type="submit" className='bottom_create'>Login</button>
-//             </div>
-//         </form>
-//     </div>
-//   )
-// }
-
-// export default LoginForm
 
 import React, {useState, useCallback, useContext, useMemo, createContext} from 'react';
 import AuthApi from '../AuthApi';
-//import Cookies from 'js-cookie';
+import Cookies from 'cookies-js';
 
 import '../../styles/LoginForm.css'
 
@@ -120,7 +54,7 @@ function LoginForm() {
     localStorage.clear();
     const [error, setError] = useState(null);
     const Auth = React.useContext(AuthApi);
-
+    
     const handleSubmit = useCallback(function (value) {
 
         fetch("http://localhost:3000/api/auth/login", {
@@ -138,10 +72,15 @@ function LoginForm() {
                 let storage = JSON.parse(localStorage.getItem('userConnect'));
                 if (storage.token === undefined) {
                     Auth.setAuth(false)
+                    console.log("test false")
+                    console.log(Auth)
                     alert("Utilisateur non identifié. Tentez de vous connecter à nouveau !")
                 } else {
+                    console.log("test true")
+                    console.log(Auth)
                     Auth.setAuth(true)
-                    //Cookies.set("user", "loginTrue")
+                    Cookies.set("user", "loginTrue")
+                    
                     alert("La communauté de Groupomania est contente de vous revoir !")
                 }
             },

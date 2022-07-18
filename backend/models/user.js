@@ -7,7 +7,8 @@ const userSchema = mongoose.Schema({
     lastName:{type:String, required: true},
     userName: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true }, //unique (mongoose-unique-validator) deux utilisateurs ne puissent partager la même adresse e-mail.
-    password: { type: String, required: true }
+    password: { type: String, required: true },
+    
 });
 userSchema.plugin(uniqueValidator);
 module.exports = mongoose.model('User', userSchema);

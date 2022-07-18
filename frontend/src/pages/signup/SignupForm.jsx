@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 
-import { useNavigate } from 'react-router-dom'
+import { Redirect } from 'react-router-dom';
 import '../../styles/SignupForm.css'
 function SignupForm() {
     const[data,setData]=useState({
@@ -12,7 +12,7 @@ function SignupForm() {
         password:""
     });
     
-    const navigate=useNavigate()
+    
 
     const handleChange=({currentTarget:input})=>{
         setData({...data,[input.name]:input.value});
@@ -31,7 +31,7 @@ function SignupForm() {
             window.alert(error);
             return;
         })
-        navigate("/login")
+        Redirect("/login")
         
     }
     

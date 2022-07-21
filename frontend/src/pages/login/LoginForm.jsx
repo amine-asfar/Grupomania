@@ -73,15 +73,12 @@ function LoginForm() {
                 let storage = JSON.parse(localStorage.getItem('userConnect'));
                 if (storage.token === undefined) {
                     Auth.setAuth(false)
-                    console.log("test false")
-                    console.log(Auth)
                     alert("Utilisateur non identifié. Tentez de vous connecter à nouveau !")
                 } else {
-                    console.log("test true")
-                    console.log(Auth)
+                    console.log(storage)
                     Auth.setAuth(true)
                     Cookies.set("user", "loginTrue")
-                    Redirect()
+                    
                     alert("La communauté de Groupomania est contente de vous revoir !")
                 }
             },
@@ -89,6 +86,7 @@ function LoginForm() {
                 if(error) {
                     setError(error);
                     Auth.setAuth(false)
+                    
                 }
             }
         )

@@ -1,5 +1,5 @@
 import React from 'react'
-import '../styles/post.css'
+import '../../styles/post.css'
 
 function Post({ username, timestamp, message }) {
     return (

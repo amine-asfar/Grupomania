@@ -1,13 +1,13 @@
 import React from 'react';
-import '../styles/Home.css'
-import Header from '../components/Header';
-import CreatePost from '../components/CreatePost';
-import Post from '../components/Post';
-function Home() {
+import '../../styles/PostsPage.css'
+import Header from '../Posts/Header';
+import CreatePost from '../Posts/CreatePost';
+import Post from '../Posts/Post';
+function PostsPage() {
     return (
-        <div className='home'>
+        <div>
         <Header />
-        <div className='home_body'>
+        <div className='postpage_body'>
           <CreatePost />
           <Post
             message="hello world 😊 "
@@ -22,4 +22,4 @@ function Home() {
     )
 }
 
-export default Home
+export default PostsPage

@@ -1,21 +1,25 @@
 const post = require('../models/post');
 const fs=require('fs');
+const Post = require('../models/post');
 
 exports.creatPost = (req, res, next) => {
     
     const postObject =req.body;
     console.log(postObject)
     delete postObject._id;
-    const post = new post({
+    console.log(postObject)
+    const Post = new post({
         ...postObject,
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+    
         likes: 0,
         usersLiked: [],
        
 
     });
+   
 
-    post.save()
+    Post.save()
         .then(() => res.status(201).json({ message: 'post enregistré !' }))
         .catch(error => res.status(400).json({ error }));
 };

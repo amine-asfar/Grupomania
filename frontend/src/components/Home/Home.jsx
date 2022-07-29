@@ -23,8 +23,8 @@ const Home = () => {
               <div className='home_body'>
                 <h1>Bienvenue sur le réseau social de Groupomania !</h1>
                 <div className='home_button'>
-                  <Link to="/signup"><button><SignupIcon/> S'inscrire</button></Link>
-                  <Link to="/login"><button><LoginIcon /> Se connecter</button></Link>
+                  <Link to="/signup"><button><SignupIcon/> Signup</button></Link>
+                  <Link to="/login"><button><LoginIcon /> Login</button></Link>
                 </div>
               </div>
             </div>

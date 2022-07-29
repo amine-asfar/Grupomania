@@ -21,16 +21,14 @@
     border:solid 3px;
     border-color:#fd2d01;
 }
-/* .createpost__input::placeholder{
+.createpost__input::placeholder{
     color: #c03232;
     font-size: x-large;
-    padding: 0 40px;
-    position: relative;
-    bottom: 60px;
+    
     
 } */
 .createpost > form >button{
-    display: none;
+    
 }
 
 /* input[type='text']{

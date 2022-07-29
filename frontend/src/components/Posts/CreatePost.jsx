@@ -1,86 +1,49 @@
 import React, { useState } from 'react'
-import { Redirect,Link } from 'react-router-dom';
-import Field from '../Form/Field';
-import Form from 'react-bootstrap/Form'
 import '../../styles/CreatePost.css'
-class CreatePost extends React.Component {
-    state={redirection:false};
+function CreatePost() {
+    let storage = JSON.parse(localStorage.getItem('user'));
+    let token=storage.token;
+    console.log(token)
+    const[post,setPost]=useState({
+        userId:storage.userId,
+        message:"",
+        imageUrl:"test.png",
+        usersLikes:[1,2,3]
+    })
 
-    constructor(props){
-        super(props)
-        const userConnect=JSON.parse(localStorage.getItem('userConnect'));
-        this.state={
-            userId: userConnect.userId,
-            title: undefined || '',
-            content: undefined || '',
-            articleUrl: undefined || ''
-        }
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+    const handleChange=({currentTarget:input})=>{
+        setPost({...post,[input.name]:input.value});
     }
-    handleChange (e) {
-        const name = e.target.name;
-        const value =  e.target.value;
-        this.setState({
-            [name]: value
-        })
-    }
-    handleSubmit (e){
-        e.preventDefault()
-        const storage = JSON.parse(localStorage.getItem('userConnect'));
-        let token =   storage.token;
-
-        const requestOptions = {
-            method: 'post',
-            headers: { 
-                'Content-Type': 'application/json',
-                'Authorization': token
+    const handleSubmit=async(e)=>{
+        e.preventDefault();
+        
+        await fetch("http://localhost:3000/api/post/",{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json",
+                'Authorization': `Bearer ${token}`,
             },
-            body: JSON.stringify(this.state)
-
+            body:JSON.stringify(post),
+        })
+        .catch (error=>{
+            window.alert(error);
+            return;
+        })
+       
+        
     }
-    fetch(('http://localhost:3000/api/post/'), requestOptions)
-                .then(response => response.json())
-                .then(
-                    (response) => {
-                    if (response.error) { 
-                        alert("Votre article n'a pas pu être publié : " + response.error); 
-                    } else { 
-                        this.setState({ redirection: true })
-                        alert("Votre article à bien été publié !")
-                    }
-                })
-                .catch(error => {
-                    this.setState({ Erreur: error.toString() });
-                    console.error('There was an error!', error);
-            });
+
+  return (
+    <div className='createpost'>
+    <form onSubmit={handleSubmit}>
+        <label >
+
+            <input type='text' name='message' placeholder='whats in your mind' className='createpost__input' onChange={handleChange} value={post.message}/>
+            <input type='submit' value='share' />
+        </label>
+    </form>
+    </div>
+  )
 }
-render() {
-    const { redirection } = this.state;
-    if (redirection) {
-        return <Redirect to='/articles' />;
-    }
-
-    return <React.Fragment>
-        <div className="container">
-            <h1>Publiez un article</h1>
-            <form>
-                <Field name="title" value={this.state.title} onChange={this.handleChange}>Titre</Field>
-                <Form.Group controlId="exampleForm.ControlTextarea1" >
-                    <Form.Label>Contenu de l'article</Form.Label>
-                    <Form.Control as="textarea" rows={8} name="content" value={this.state.content} onChange={this.handleChange} />
-                </Form.Group>
-                <Field name="articleUrl" value={this.state.articleUrl} onChange={this.handleChange}>URL d'un article</Field>
-                <div className="form-submit">
-                    <button className="btn btn-outline-success btn-sm" onClick={this.handleSubmit}>Publiez l'article</button>
-                    <Link to='/posts' className="btn btn-outline-info btn-sm">Retour aux articles</Link>
-                </div>
-            </form>
-        </div>
-    </React.Fragment>
-};
-};
 
 export default CreatePost
-
-

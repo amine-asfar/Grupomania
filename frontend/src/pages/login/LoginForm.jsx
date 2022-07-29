@@ -1,114 +1,74 @@
 
-
-import React, {useState, useCallback, useContext, useMemo, createContext} from 'react';
-import AuthApi from '../AuthApi';
-import Cookies from 'cookies-js';
-
 import '../../styles/LoginForm.css'
-import { Redirect } from 'react-router-dom';
+import { useState } from "react";
+import { useAuth } from "../Auth";
+import { useNavigate,useLocation } from "react-router-dom";
 
-const FormContext = createContext({})
 
-function FormWithContext ({defaultValue, onSubmit, children}) {
+export const LoginForm=()=>{
+    const [user,setUser]=useState({
+        email:'',
+        password:''
+    })
+    const auth=useAuth()
+    const navigator=useNavigate();
+    const location=useLocation();
 
-    const [data, setData] = useState(defaultValue)
+    const redirectPath=location.state?.path || '/posts'
 
-    const change = useCallback(function (name, value) {
-        setData(d => ({...d, [name]: value}))
-    }, [])
+    const handleChange=({currentTarget:input})=>{
+        setUser({...user,[input.name]:input.value});
+    }
 
-    const value= useMemo(function () {
-        return {...data, change}
-    }, [data, change])
-
-    const handleSubmit = useCallback(function (e) {
-        e.preventDefault()
-        onSubmit(value)
-    }, [onSubmit, value])
-
-    return <FormContext.Provider value={value}>
-        <form onSubmit={handleSubmit}>
-            {children}
-        </form>
-    </FormContext.Provider>
-}
-
-function FormField ({name, type, children}) {
-    const data = useContext(FormContext)
-    const handleChange = useCallback(function (e) {
-        data.change(e.target.name, e.target.value)
-    }, [data])
-
-    return (
-        <label htmlFor={name}>{children}
-            <input type={type} name={name} id={name} className="form-control" value={data[name] || ''} onChange={handleChange}/>
-        </label>)
-}
-
-function PrimaryButton ({children}) {
-    return <div className='bottom_flex'>
-               <button type="submit" className='bottom_create'>{children}</button>
-            </div>
-}
-
-function LoginForm() {
-    localStorage.clear();
-    const [error, setError] = useState(null);
-    const Auth = React.useContext(AuthApi);
-    
-    const handleSubmit = useCallback(function (value) {
-
-        fetch("http://localhost:3000/api/auth/login", {
-            method: "post",
-            headers: { "Content-type" : 'application/json'},
-            body: JSON.stringify({
-                email: value.email,
-                password: value.password
-            })
+    const handleLogin=async(e)=>{
+        e.preventDefault();
+        
+        await fetch("http://localhost:3000/api/auth/login",{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify(user),
         })
+        
         .then(res => res.json())
         .then(
             (result) => {
-                localStorage.setItem('userConnect', JSON.stringify(result));
-                let storage = JSON.parse(localStorage.getItem('userConnect'));
-                if (storage.token === undefined) {
-                    Auth.setAuth(false)
+                // localStorage.setItem('userConnect', JSON.stringify(result));
+                // let storage = JSON.parse(localStorage.getItem('userConnect'));
+                if (result.token === undefined) {
                     alert("Utilisateur non identifié. Tentez de vous connecter à nouveau !")
                 } else {
-                    console.log(storage)
-                    Auth.setAuth(true)
-                    Cookies.set("user", "loginTrue")
+                    console.log(user)
+                    auth.login({...user, token: result.token,userName:result.userName,userId:result.userId})
+                    // auth.login(user)
+                    navigator(redirectPath,{replace:true})
                     
                     alert("La communauté de Groupomania est contente de vous revoir !")
                 }
-            },
-            (error) => {
-                if(error) {
-                    setError(error);
-                    Auth.setAuth(false)
-                    
-                }
-            }
-        )
-    }, [Auth])
+    })
+}
+    return(
+        <div className="login_form">
+            <h2>Login</h2>
+            <form>
+                <label>
+                    Email
+                    <input type='email' name='email' onChange={handleChange} value={user.email} required  />
+                </label>
+                <label>
+                    Password
+                    <input type='password' name='password' onChange={handleChange} value={user.password} required />
+                </label>
 
-    if (error) {
-        return <div>Erreur : {error.message}</div>;
-    } else {
-        return (
-            <React.Fragment>
-                <div className="login_form">
-                    <h2>Connectez-vous à votre compte</h2>
-                    <FormWithContext onSubmit={handleSubmit}>
-                        <FormField name="email" type="text">Email</FormField>
-                        <FormField name="password" type="password">Mot de passe</FormField>
-                        <PrimaryButton>Login</PrimaryButton>
-                    </FormWithContext>
+                <div className='bottom_flex'>
+                    <button type="submit" className='bottom_create' onClick={handleLogin}>Login</button>
                 </div>
-            </React.Fragment>
-        );
-    }
+
+            </form>
+            
+            
+        </div>
+    )
 }
 
-
-export default LoginForm

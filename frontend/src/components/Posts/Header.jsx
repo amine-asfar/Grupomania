@@ -2,13 +2,19 @@ import React from 'react'
 import '../../styles/Header.css'
 import logo from '../../assets/icon-left-font-monochrome-white.png'
 import LogoutIcon from '@mui/icons-material/Logout';
-import { Link } from 'react-router-dom';
-import AuthApi from '../../pages/AuthApi';
+import { Link, useNavigate } from 'react-router-dom';
+import {useAuth} from '../../pages/Auth'
 function Header() {
-    const Auth = React.useContext(AuthApi);
+    // const Auth = React.useContext(AuthApi);
+    // const handleLogout=()=>{
+    //     //localStorage.removeItem("token");
+    //     //Auth.setAuth(false)
+    // }
+    const auth=useAuth()
+    const navigator=useNavigate()
     const handleLogout=()=>{
-        //localStorage.removeItem("token");
-        //Auth.setAuth(false)
+        auth.logout()
+        navigator('/')
     }
     return (
         <div className='header'>
@@ -16,10 +22,10 @@ function Header() {
                 <img src={logo} alt='logo-Groupomania' className='gm-logo' />
             </div>
             <div className='header__right'>
-                <Link to="/" onClick={handleLogout}>
+                <button onClick={handleLogout}>
                     <LogoutIcon />
                     <span>Logout </span>
-                </Link>
+                </button>
 
 
             </div>

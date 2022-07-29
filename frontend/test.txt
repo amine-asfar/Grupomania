@@ -1,0 +1,10 @@
+// const handleLogin=()=>{
+//     auth.login(user)
+//     navigator('posts',{replace:true})
+// }
+
+// <label>
+//       email:{''}
+//       <input type='email' onChange={(e)=>setUser(e.target.value)} />
+// </label>
+// <button onClick={handleLogin}>Login</button>

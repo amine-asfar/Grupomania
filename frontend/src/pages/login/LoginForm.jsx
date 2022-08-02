@@ -65,7 +65,7 @@ export const LoginForm = () => {
           <ERROR errorObject={formErrors} />
         ) : null}
         <div className="mb-3">
-          <label for="exampleFormControlInput1" className="form-label">
+          <label htmlFor="exampleFormControlInput1" className="form-label">
             Email address
           </label>
           <input
@@ -80,7 +80,7 @@ export const LoginForm = () => {
           />
         </div>
         <div className="mb-3">
-          <label for="password" className="form-label">
+          <label htmlFor="password" className="form-label">
             Password
           </label>
           <input

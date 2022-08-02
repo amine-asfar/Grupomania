@@ -1,50 +1,87 @@
-import React, { useState } from 'react'
-import '../../styles/CreatePost.css'
+import React, { useState, useContext } from "react";
+import "../../styles/CreatePost.css";
+import FileBase from "react-file-base64";
+import axios from "axios";
+import Loader from "../Loader/Loader";
+import { userAuthContext } from "../../ContextAPI/isAuth";
+import { useNavigate } from "react-router-dom";
 function CreatePost() {
-    let storage = JSON.parse(localStorage.getItem('user'));
-    let token=storage.token;
-    console.log(token)
-    const[post,setPost]=useState({
-        userId:storage.userId,
-        message:"",
-        imageUrl:"test.png",
-        usersLikes:[1,2,3]
-    })
+  let storage = "",
+    token = "";
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const [isAuth] = useContext(userAuthContext);
 
-    const handleChange=({currentTarget:input})=>{
-        setPost({...post,[input.name]:input.value});
+  if (isAuth) {
+    storage = JSON.parse(localStorage.getItem("user"));
+    token = storage?.token;
+  }
+  
+  const [postData, setPostData] = useState({
+    message: "",
+    selectedFile: "",
+    creator: storage?.userName,
+    createdAt:new Date().toLocaleString("fr-FR", {timeZone: "Europe/Paris"})
+  });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    //Posting Post
+    setIsLoading(null);
+    const API = axios.create({ baseURL: "http://localhost:8080" });
+
+    API.interceptors.request.use((req) => {
+      req.headers.Authorization = `Bearer ${token}`;
+
+      return req;
+    });
+    try {
+      await API.post("/api/post/", postData);
+      setIsLoading(false);
+      navigate(0);
+    } catch (error) {
+      setIsLoading(false);
+      console.log(error);
     }
-    const handleSubmit=async(e)=>{
-        e.preventDefault();
-        
-        await fetch("http://localhost:3000/api/post/",{
-            method:"POST",
-            headers:{
-                "Content-Type":"application/json",
-                'Authorization': `Bearer ${token}`,
-            },
-            body:JSON.stringify(post),
-        })
-        .catch (error=>{
-            window.alert(error);
-            return;
-        })
-       
-        
-    }
+  };
 
   return (
-    <div className='createpost'>
-    <form onSubmit={handleSubmit}>
-        <label >
+    <div
+      className="createpost container"
+      style={{ maxWidth: "550px", padding: "0" }}
+    >
+      <form onSubmit={handleSubmit} className="rounded shadow-sm">
+        <div className="mb-3">
+          <textarea
+            className="form-control"
+            id="exampleFormControlTextarea1"
+            rows="3"
+            name="message"
+            onChange={(e) =>
+              setPostData({ ...postData, message: e.target.value })
+            }
+            placeholder="whats in your mind"
+          ></textarea>
+        </div>
+        <div className="mb-3">
+          <FileBase
+            id="formFile"
+            className="form-control"
+            type="file"
+            multiple={false}
+            onDone={({ base64 }) => {
+              setPostData({ ...postData, selectedFile: base64 });
+            }}
+          />
+        </div>
 
-            <input type='text' name='message' placeholder='whats in your mind' className='createpost__input' onChange={handleChange} value={post.message}/>
-            <input type='submit' value='share' />
-        </label>
-    </form>
+        <button className="btn btn-primary btn-load">
+          <span>Share</span>
+          {isLoading ?? <Loader />}
+        </button>
+      </form>
     </div>
-  )
+  );
 }
 
-export default CreatePost
-
+export default CreatePost;

@@ -1,0 +1,9 @@
+.btn-load,
+.btn-with-icon {
+  display: flex !important;
+  place-items: center;
+  gap: 0.5rem;
+}
+body {
+  background-color: #eff2f5 !important;
+}

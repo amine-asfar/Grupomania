@@ -1,38 +1,28 @@
-/* .createpost{
-   
-    width: 600px;
-    height: 200px;
-    border-radius: 20px;
-    background-color: white;
-    box-shadow: 0px 5px 7px -7px black;
-    margin-top: 30px;
-}  */
-.createpost__input{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 550px;
-    height: 150px;
-    outline: 0;
-    border: none;
-    border-radius: 30px;
-    background-color: white;
-    margin-top: 30px;
-    border:solid 3px;
-    border-color:#fd2d01;
+
+.createpost__input {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 550px;
+  height: 150px;
+  outline: 0;
+  border: none;
+  border-radius: 30px;
+  background-color: white;
+  margin-top: 30px;
+  border: solid 3px;
+  border-color: #fd2d01;
 }
-.createpost__input::placeholder{
-    color: #c03232;
-    font-size: x-large;
-    
-    
-} */
-.createpost > form >button{
-    
+.createpost__input::placeholder {
+  color: #c03232;
+  font-size: x-large;
+}
+.createpost textarea {
+  height: 100px;
+  resize: none;
+}
+.createpost form {
+  background: white;
+  margin: 20px 0 !important;
 }
 
-/* input[type='text']{
-    font-size: x-large;
-    bottom: 50px;
-    
-} */

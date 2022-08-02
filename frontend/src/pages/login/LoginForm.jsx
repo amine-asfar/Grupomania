@@ -1,74 +1,110 @@
+import "../../styles/LoginForm.css";
+import { useContext, useState } from "react";
 
-import '../../styles/LoginForm.css'
-import { useState } from "react";
-import { useAuth } from "../Auth";
-import { useNavigate,useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { userAuthContext } from "../../ContextAPI/isAuth";
+import ERROR from "../../components/ERROR/ERROR";
+export const LoginForm = () => {
+  const [, setIsAuth] = useContext(userAuthContext);
+  const [formErrors, setFormErrors] = useState({});
+  const navigator = useNavigate();
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+  });
 
+  const handleChange = ({ currentTarget: input }) => {
+    setUser({ ...user, [input.name]: input.value });
+  };
+  const formValidation = (data) => {
+    const error = {};
+    const emailRegEx = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+    const { email } = data;
 
-export const LoginForm=()=>{
-    const [user,setUser]=useState({
-        email:'',
-        password:''
-    })
-    const auth=useAuth()
-    const navigator=useNavigate();
-    const location=useLocation();
+    if (!emailRegEx.test(email)) error.email = "Email non valid";
 
-    const redirectPath=location.state?.path || '/posts'
+    return error;
+  };
 
-    const handleChange=({currentTarget:input})=>{
-        setUser({...user,[input.name]:input.value});
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const validator = formValidation(user);
+
+    if (Object.keys(validator).length > 0) {
+      setFormErrors(validator);
+      return;
     }
 
-    const handleLogin=async(e)=>{
-        e.preventDefault();
-        
-        await fetch("http://localhost:3000/api/auth/login",{
-            method:"POST",
-            headers:{
-                "Content-Type":"application/json"
-            },
-            body:JSON.stringify(user),
-        })
-        
-        .then(res => res.json())
-        .then(
-            (result) => {
-                // localStorage.setItem('userConnect', JSON.stringify(result));
-                // let storage = JSON.parse(localStorage.getItem('userConnect'));
-                if (result.token === undefined) {
-                    alert("Utilisateur non identifié. Tentez de vous connecter à nouveau !")
-                } else {
-                    console.log(user)
-                    auth.login({...user, token: result.token,userName:result.userName,userId:result.userId})
-                    // auth.login(user)
-                    navigator(redirectPath,{replace:true})
-                    
-                    alert("La communauté de Groupomania est contente de vous revoir !")
-                }
+    await fetch("http://localhost:8080/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
     })
-}
-    return(
-        <div className="login_form">
-            <h2>Login</h2>
-            <form>
-                <label>
-                    Email
-                    <input type='email' name='email' onChange={handleChange} value={user.email} required  />
-                </label>
-                <label>
-                    Password
-                    <input type='password' name='password' onChange={handleChange} value={user.password} required />
-                </label>
-
-                <div className='bottom_flex'>
-                    <button type="submit" className='bottom_create' onClick={handleLogin}>Login</button>
-                </div>
-
-            </form>
-            
-            
+      .then((res) => res.json())
+      .then((result) => {
+        // localStorage.setItem('userConnect', JSON.stringify(result));
+        // let storage = JSON.parse(localStorage.getItem('userConnect'));
+        if (result.token === undefined) {
+          alert(
+            "Utilisateur non identifié. Tentez de vous connecter à nouveau !"
+          );
+        } else {
+          localStorage.setItem("user", JSON.stringify(result));
+          navigator("/posts");
+          setIsAuth(true);
+        }
+      });
+  };
+  return (
+    <div className="login_form card">
+      <h2 className="card-title">Login</h2>
+      <form>
+        {Object.keys(formErrors).length ? (
+          <ERROR errorObject={formErrors} />
+        ) : null}
+        <div className="mb-3">
+          <label for="exampleFormControlInput1" className="form-label">
+            Email address
+          </label>
+          <input
+            type="email"
+            className="form-control"
+            id="exampleFormControlInput1"
+            placeholder="name@example.com"
+            name="email"
+            onChange={handleChange}
+            value={user.email}
+            required
+          />
         </div>
-    )
-}
+        <div className="mb-3">
+          <label for="password" className="form-label">
+            Password
+          </label>
+          <input
+            type="password"
+            className="form-control"
+            id="password"
+            placeholder="password"
+            name="password"
+            onChange={handleChange}
+            value={user.password}
+            required
+          />
+        </div>
 
+        <div className="bottom_flex">
+          <button
+            type="submit"
+            className="btn btn-primary px-5 mt-3"
+            onClick={handleLogin}
+          >
+            Login
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+};

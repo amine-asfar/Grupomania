@@ -1,22 +1,5 @@
 
-.createpost__input {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 550px;
-  height: 150px;
-  outline: 0;
-  border: none;
-  border-radius: 30px;
-  background-color: white;
-  margin-top: 30px;
-  border: solid 3px;
-  border-color: #fd2d01;
-}
-.createpost__input::placeholder {
-  color: #c03232;
-  font-size: x-large;
-}
+
 .createpost textarea {
   height: 100px;
   resize: none;

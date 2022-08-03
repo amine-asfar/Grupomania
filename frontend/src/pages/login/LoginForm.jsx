@@ -44,8 +44,7 @@ export const LoginForm = () => {
     })
       .then((res) => res.json())
       .then((result) => {
-        // localStorage.setItem('userConnect', JSON.stringify(result));
-        // let storage = JSON.parse(localStorage.getItem('userConnect'));
+  
         if (result.token === undefined) {
           alert(
             "Utilisateur non identifié. Tentez de vous connecter à nouveau !"

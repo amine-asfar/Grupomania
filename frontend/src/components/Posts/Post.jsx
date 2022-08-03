@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { AiOutlineLike, AiFillLike } from "react-icons/ai";
 import { FaTrashAlt } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
-import "../../styles/post.css";
 import axios from "axios";
 import FileBase from "react-file-base64";
 import { useNavigate } from "react-router-dom";
@@ -16,7 +15,7 @@ function Post({
   postId,
   usersLiked,
 }) {
-  console.log(new Date(timestamp))
+  
   let storage = JSON.parse(localStorage.getItem("user"));
   let token = storage.token;
   const navigate = useNavigate();

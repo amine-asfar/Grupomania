@@ -5,11 +5,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
 import { userAuthContext } from "../../ContextAPI/isAuth";
 function Header() {
-  // const Auth = React.useContext(AuthApi);
-  // const handleLogout=()=>{
-  //     //localStorage.removeItem("token");
-  //     //Auth.setAuth(false)
-  // }
+  
   const [, setIsAuth] = useContext(userAuthContext);
   const navigator = useNavigate();
   const handleLogout = () => {

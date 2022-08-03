@@ -149,10 +149,10 @@ function Post({
         </div>
       </div>
       <div className="card" style={{ maxWidth: "550px" }}>
-        <img className="card-img-top" src={image} alt="post" />
+        {Boolean(image) ? <img className="card-img-top" src={image} alt="post" /> : null}
         <div className="card-body">
           <h5 className="card-title">{username}</h5>
-          <p className="card-text">{message}</p>
+          {Boolean(message) ? <p className="card-text">{message}</p> : null}
           <p className="card-text">
             <small className="text-muted">{timestamp}</small>
           </p>

@@ -28,6 +28,7 @@ function CreatePost() {
     e.preventDefault();
     //Posting Post
     setIsLoading(null);
+    if (!Boolean(postData.message) && !Boolean(postData.selectedFile)) return;
     const API = axios.create({ baseURL: "http://localhost:8080" });
 
     API.interceptors.request.use((req) => {
